@@ -1,23 +1,28 @@
 {
   "Timing": {
-    "Test dataset generation": "4.7884s",
-    "Key Generation": "0.9751s",
-    "Encrypted model preprocessing": "0.0037s",
-    "Input generation": "2.3544s",
-    "Input preprocessing": "0.0036s",
-    "Input encryption": "0.0921s",
-    "Encrypted computation": "7.6145s",
-    "Result decryption": "0.0845s",
-    "Result postprocessing": "0.0028s",
-    "Total": "15.9192s"
+    "Test dataset generation": "7.3174s",
+    "Communication: Get cryptographic context": "1.946s",
+    "Key Generation": "3.404s",
+    "Communication: Upload evaluation key": "4.7369s",
+    "Encrypted model preprocessing": "0.0002s",
+    "Input generation": "2.5617s",
+    "Input preprocessing": "1.6003s",
+    "Input encryption": "1.6322s",
+    "Encrypted computation": "1.8567s",
+    "Result decryption": "1.6894s",
+    "Result postprocessing": "0.0002s",
+    "Total": "26.7449s"
   },
   "Bandwidth": {
-    "Public and evaluation keys": "1.0G",
-    "Encrypted input": "5.0M",
-    "Encrypted results": "1.0M"
+    "Cryptographic Context": "2.4M",
+    "Public and evaluation keys": "113.0M",
+    "Encrypted input": "256.1K",
+    "Encrypted results": "256.1K"
   },
   "Server Reported": {
-    "Encrypted computation": "6.467s",
-    "Total": "6.467s"
+    "Encrypted computation": "0.049s",
+    "Backend overhead": "0.09s",
+    "Upload time": "0.015s",
+    "Download time": "0.064s"
   }
 }
