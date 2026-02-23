@@ -1,7 +1,6 @@
 # Lattica-ai ML-inference Submission
 
-Most relevant information regarding the model architecture and packing strategy are contained in the public README (submission_remote/submission_params_and_model/README.md).
-\
+Most relevant information regarding the model architecture and packing strategy are contained in the [public README](README.md).
 Here we present only the security parameters, the execution environment, and example execution logs.
 
 
