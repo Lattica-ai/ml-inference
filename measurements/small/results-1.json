@@ -1,37 +1,42 @@
 {
   "Timing": {
-    "Test dataset generation": "4.1259s",
-    "Key Generation": "0.9661s",
-    "Encrypted model preprocessing": "0.0037s",
-    "Input generation": "2.4171s",
-    "Input preprocessing": "0.0215s",
-    "Input encryption": "3.0323s",
-    "Encrypted computation": "647.0703s",
-    "Result decryption": "2.5428s",
-    "Result postprocessing": "0.0029s",
-    "Harness: Run inference for harness plaintext model": "75.5029s",
+    "Test dataset generation": "7.1059s",
+    "Communication: Get cryptographic context": "2.3425s",
+    "Key Generation": "1.8748s",
+    "Communication: Upload evaluation key": "2.4603s",
+    "Encrypted model preprocessing": "0.0002s",
+    "Input generation": "2.6192s",
+    "Input preprocessing": "1.6322s",
+    "Input encryption": "4.6966s",
+    "Encrypted computation": "3.5045s",
+    "Result decryption": "2.2481s",
+    "Result postprocessing": "0.0002s",
+    "Harness: Run inference for harness plaintext model": "2.6155s",
     "Harness: Run quality check": "0.0003s",
-    "Total": "735.6858s"
+    "Total": "31.1002s"
   },
   "Bandwidth": {
-    "Public and evaluation keys": "1.0G",
-    "Encrypted input": "500.3M",
-    "Encrypted results": "100.2M"
+    "Cryptographic Context": "1.6M",
+    "Public and evaluation keys": "16.5M",
+    "Encrypted input": "196.0M",
+    "Encrypted results": "2.5M"
   },
   "Quality": {
     "Encrypted model quality": {
-      "correct_predictions": 96,
+      "correct_predictions": 94,
       "total_samples": 100,
-      "accuracy": 0.96
+      "accuracy": 0.94
     },
     "Harness model quality": {
-      "correct_predictions": 100,
+      "correct_predictions": 99,
       "total_samples": 100,
-      "accuracy": 1.0
+      "accuracy": 0.99
     }
   },
   "Server Reported": {
-    "Encrypted computation": "634.0960000000001s", 
-    "Total": "634.0960000000001s"
+    "Encrypted computation": "0.613s",
+    "Backend overhead": "0.06s",
+    "Upload time": "0.961s",
+    "Download time": "0.074s"
   }
 }
