@@ -1,10 +1,9 @@
-# Lattica-ai Submission
+# Lattica-ai ML-inference Submission
 
 Most relevant information regarding the model architecture and packing strategy are contained in the public README (submission_remote/submission_params_and_model/README.md).
 \
-Here we present only the security parameters and example execution logs.
+Here we present only the security parameters, the execution environment, and example execution logs.
 
----
 
 ## FHE parameters and security
 
@@ -13,6 +12,22 @@ Here we present only the security parameters and example execution logs.
 * **Secret key distribution:** sparse ternary
 
 These parameters are well above required 128-bit security.
+
+
+## Execution environment
+
+**Client**
+
+* AWS c5.4xlarge
+* 16 vCPUs, 32GB RAM
+
+**Server**
+
+* AWS EC2 g6e.2xlarge
+* NVIDIA L40S (48 GB)
+* 8 vCPUs, 64 GB RAM
+
+Both machines are in the same AWS region (us-east-1)
 
 ---
 
