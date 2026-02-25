@@ -8,7 +8,7 @@ Here we present only the security parameters, the execution environment, and exa
 
 * **Ring dimension:** 2^13 = 8192
 * **Modulus size:** 122 bits
-* **Secret key distribution:** sparse ternary
+* **Secret key distribution:** uniform ternary
 
 These parameters are well above required 128-bit security.
 
