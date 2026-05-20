@@ -6,11 +6,11 @@ Here we present only the security parameters, the execution environment, and exa
 
 ## FHE parameters and security
 
-* **Ring dimension:** 2^13 = 8192
-* **Modulus size:** 122 bits
+* **Ring dimension:** 2^12 = 4096
+* **Modulus size:** 106 bits
 * **Secret key distribution:** uniform ternary
 
-These parameters are well above required 128-bit security.
+These parameters achieve required 128-bit security.
 
 
 ## Execution environment
@@ -22,8 +22,8 @@ These parameters are well above required 128-bit security.
 
 **Server**
 
-* AWS EC2 g6e.2xlarge
-* NVIDIA L40S (48 GB)
+* AWS EC2 g7e.2xlarge
+* NVIDIA GB202 (96 GB)
 * 8 vCPUs, 64 GB RAM
 
 Both machines are in the same AWS region (us-east-1)
@@ -32,7 +32,7 @@ Both machines are in the same AWS region (us-east-1)
 
 ## Example execution logs
 
-### `batch_size = 1`
+### `batch_size = 1`???
 
 ```
 python3 harness/run_submission.py --remote 0
