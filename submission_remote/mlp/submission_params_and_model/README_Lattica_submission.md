@@ -37,28 +37,23 @@ Both machines are in the same AWS region (us-east-1)
 ```
 python3 harness/run_submission.py --remote 0
 
-14:57:03 [harness] 1: Test dataset generation completed (elapsed: 7.319s)
-14:57:06 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 2.4785s)
-         [harness] Cryptographic Context size: 2.4M
-14:57:09 [harness] 2.2: Key Generation completed (elapsed: 3.4212s)
-         [harness] Public and evaluation keys size: 113.0M
-14:57:14 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 4.883s)
-14:57:14 [harness] 3: Encrypted model preprocessing completed (elapsed: 0.0002s)
-14:57:17 [harness] 4: Input generation completed (elapsed: 2.564s)
-14:57:18 [harness] 5: Input preprocessing completed (elapsed: 1.6013s)
-14:57:20 [harness] 6: Input encryption completed (elapsed: 1.6352s)
-         [harness] Encrypted input size: 256.1K
-14:57:22 [harness] 7: Encrypted computation completed (elapsed: 1.8769s)
-         [harness] Encrypted results size: 256.1K
-14:57:23 [harness] 8: Result decryption completed (elapsed: 1.6911s)
-14:57:23 [harness] 9: Result postprocessing completed (elapsed: 0.0002s)
+20:25:31 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 7.6382s)
+20:25:34 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 2.6875s)
+         [harness] Cryptographic Context size: 1.2M
+20:25:36 [harness] 2.2: Client: Key Generation completed (elapsed: 2.1788s)
+         [harness] Client: Public and evaluation keys size: 46.0M
+20:25:39 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 3.0939s)
+20:25:39 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0002s)
+20:25:42 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 2.5526s)
+20:25:43 [harness] 5: Client: Input preprocessing completed (elapsed: 1.5988s)
+20:25:45 [harness] 6: Client: Input encryption completed (elapsed: 1.6351s)
+         [harness] Client: Encrypted input size: 128.1K
+20:25:47 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 1.8457s)
+         [harness] Client: Encrypted results size: 128.1K
+20:25:49 [harness] 8: Client: Result decryption completed (elapsed: 1.6679s)
+20:25:49 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0002s)
 [harness] PASS  (expected=5, got=5)
-         [submission] Server reported steps: {'Encrypted computation': 0.048, 'Backend overhead': 0.098, 'Upload time': 0.013, 'Download time': 0.065}
-         [submission] Encrypted computation: 0.048s
-         [submission] Backend overhead: 0.098s
-         [submission] Upload time: 0.013s
-         [submission] Download time: 0.065s
-[total latency] 27.4704s
+[total latency] 24.8991s
 ```
 
 - Public + evaluation keys size: 46 MB
