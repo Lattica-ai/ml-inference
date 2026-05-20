@@ -1,28 +1,22 @@
 {
-  "Timing": {
-    "Test dataset generation": "7.3174s",
-    "Communication: Get cryptographic context": "1.946s",
-    "Key Generation": "3.404s",
-    "Communication: Upload evaluation key": "4.7369s",
-    "Encrypted model preprocessing": "0.0002s",
-    "Input generation": "2.5947s",
-    "Input preprocessing": "1.6026s",
-    "Input encryption": "1.644s",
-    "Encrypted computation": "1.8479s",
-    "Result decryption": "1.6901s",
-    "Result postprocessing": "0.0002s",
-    "Total": "26.784s"
+  "total_latency_ms": 25.0791,
+  "per_stage": {
+    "Harness: MNIST Test dataset generation": "7.3268s",
+    "Communication: Get cryptographic context": "2.3748s",
+    "Client: Key Generation": "2.1784s",
+    "Communication: Upload evaluation key": "3.5807s",
+    "Server: (Encrypted) model preprocessing": "0.0002s",
+    "Harness: Input generation for MNIST": "2.598s",
+    "Client: Input preprocessing": "1.5978s",
+    "Client: Input encryption": "1.6312s",
+    "Server: Encrypted ML Inference computation": "2.1339s",
+    "Client: Result decryption": "1.6574s",
+    "Client: Result postprocessing": "0.0002s"
   },
-  "Bandwidth": {
-    "Cryptographic Context": "2.4M",
-    "Public and evaluation keys": "113.0M",
-    "Encrypted input": "256.1K",
-    "Encrypted results": "256.1K"
-  },
-  "Server Reported": {
-    "Encrypted computation": "0.048s",
-    "Backend overhead": "0.092s",
-    "Upload time": "0.012s",
-    "Download time": "0.067s"
+  "bandwidth": {
+    "Cryptographic Context": "1.2M",
+    "Client: Public and evaluation keys": "46.0M",
+    "Client: Encrypted input": "128.1K",
+    "Client: Encrypted results": "128.1K"
   }
 }

@@ -18,13 +18,13 @@ The example uses a single set of homomorphic encryption parameters for all suppo
 homomorphic_params = {
     "full_q_list_precision": (
         (61,),
-        (61,),
-    ),                    # modulus chain: two 61-bit moduli (~122 bits total)
-    "n": 2 ** 10,         # polynomial degree (chosen for simplicity, should use 2**13 for 128-bit security)
-    "err_std": 1,         # standard deviation of the encryption noise
+          (45,),
+    ),                    # modulus chain: ~106 bits total
+    "n": 2 ** 12,         # polynomial degree
+    "err_std": 3.19,      # standard deviation of the encryption noise
     "sk_hw": 0,           # secret key distribution: uniform in {-1, 0, 1}
     "g_base_bits": 4,     # decomposition base in evaluation key
-    "pt_scale": 2 ** 15,  # initial plaintext scaling factor
+    "pt_scale": 2 ** 20,  # initial plaintext scaling factor
 }
 ```
 
@@ -45,10 +45,8 @@ model = torch.load(
     map_location="cpu",
 )
 
-l1_weight = model["fc1.weight"]
-l1_bias   = model["fc1.bias"]
-l2_weight = model["fc2.weight"]
-l2_bias   = model["fc2.bias"]
+l1_weight = model["l1.weight"]
+l2_weight = model["l2.weight"]
 ```
 
 ---
@@ -60,9 +58,9 @@ The remote homomorphic inference follows the pipeline below:
 ```python
 hom_pipeline = SequentialHomOp(
     ClientReshape((BATCH_SIZE, 28 * 28,)),      # preprocess: flatten 28x28 input image to a 784-dimensional vector
-    HomLinear(l1_weight.shape),                 # first linear layer
+    HomLinear(l1_weight.shape, bias=False),     # first linear layer (no bias)
     HomSquare(),                                # square activation
-    HomLinear(l2_weight.shape),                 # second linear layer
+    HomLinear(l2_weight.shape, bias=False),     # second linear layer (no bias)
     ClientReshape((BATCH_SIZE, 10,)),           # postprocess: reshape output to 10-class vector
 )
 ```
@@ -101,64 +99,60 @@ This example uses different ciphertext packing strategies depending on the batch
 ```
 python3 harness/run_submission.py --remote 0
 
-13:27:10 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 9.8773s)
-13:27:15 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 5.0613s)
-         [harness] Cryptographic Context size: 283.3K
-13:27:17 [harness] 2.2: Client: Key Generation completed (elapsed: 2.5725s)
-         [harness] Client: Public and evaluation keys size: 11.1M
-13:27:28 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 10.6825s)
-13:27:28 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0002s)
-13:27:32 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 3.7074s)
-13:27:32 [harness] 5: Client: Input preprocessing completed (elapsed: 0.0004s)
-13:27:34 [harness] 6: Client: Input encryption completed (elapsed: 2.353s)
-         [harness] Client: Encrypted input size: 64.1K
-ct size: 0.1MB
-apply_hom_pipeline timing: network;dur=1130, logic;dur=137, instance;dur=106, worker;dur=33
-13:27:38 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 4.1393s)
-         [harness] Client: Encrypted results size: 32.1K
-13:27:41 [harness] 8: Client: Result decryption completed (elapsed: 2.5242s)
-13:27:41 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0005s)
+11:56:49 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 7.3298s)
+11:56:51 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 2.4867s)
+         [harness] Cryptographic Context size: 1.2M
+11:56:54 [harness] 2.2: Client: Key Generation completed (elapsed: 2.1759s)
+         [harness] Client: Public and evaluation keys size: 46.0M
+11:56:57 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 3.2013s)
+11:56:57 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0001s)
+11:56:59 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 2.5745s)
+11:57:01 [harness] 5: Client: Input preprocessing completed (elapsed: 1.6053s)
+11:57:03 [harness] 6: Client: Input encryption completed (elapsed: 1.6251s)
+         [harness] Client: Encrypted input size: 128.1K
+11:57:05 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 1.8562s)
+         [harness] Client: Encrypted results size: 128.1K
+11:57:06 [harness] 8: Client: Result decryption completed (elapsed: 1.6598s)
+11:57:06 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0002s)
 [harness] PASS  (expected=5, got=5)
-[total latency] 40.9184s
+[total latency] 24.5149s
 ```
-- Public + evaluation keys size: \~11.1 MB
-- Encrypted input size: \~64 KB
-- Total inference latency: 4.1393
-- Compute inference latency: 33 ms
+- Public + evaluation keys size: 46 MB
+- Encrypted input size: 128 KB
+- Total inference latency: 210 ms
+- Compute inference latency: 80 ms
 -----
 
-### `batch_size = 15`
+### `batch_size = 100`
 
 ```
 python3 harness/run_submission.py --remote 1
 
-13:29:38 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 8.9621s)
-13:29:44 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 5.822s)
-         [harness] Cryptographic Context size: 211.1K
-13:29:47 [harness] 2.2: Client: Key Generation completed (elapsed: 2.7623s)
-         [harness] Client: Public and evaluation keys size: 2.1M
-13:29:57 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 10.491s)
-13:29:57 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0004s)
-13:30:02 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 5.0357s)
-13:30:02 [harness] 5: Client: Input preprocessing completed (elapsed: 0.0006s)
-13:30:05 [harness] 6: Client: Input encryption completed (elapsed: 3.0495s)
-         [harness] Client: Encrypted input size: 24.5M
-ct size: 24.5MB
-apply_hom_pipeline timing: network;dur=13920, logic;dur=224, instance;dur=153, worker;dur=68
-13:30:22 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 16.2854s)
-         [harness] Client: Encrypted results size: 320.1K
-13:30:24 [harness] 8: Client: Result decryption completed (elapsed: 2.5512s)
-13:30:24 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0003s)
-13:30:28 [harness] 10.1: Harness: Run inference for harness plaintext model completed (elapsed: 3.856s)
-[harness] Encrypted model: 0.8667 (13/15 correct)
-[harness] Harness model: 0.8667 (13/15 correct)
-13:30:28 [harness] 10.2: Harness: Run quality check completed (elapsed: 0.0024s)
-[total latency] 58.8189s
+20:12:38 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 7.4943s)
+20:12:41 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 2.921s)
+         [harness] Cryptographic Context size: 835.0K
+20:12:42 [harness] 2.2: Client: Key Generation completed (elapsed: 1.702s)
+         [harness] Client: Public and evaluation keys size: 7.3M
+20:12:45 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 2.2597s)
+20:12:45 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0002s)
+20:12:47 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 2.6214s)
+20:12:49 [harness] 5: Client: Input preprocessing completed (elapsed: 1.6287s)
+20:12:52 [harness] 6: Client: Input encryption completed (elapsed: 3.0083s)
+         [harness] Client: Encrypted input size: 98.0M
+20:12:55 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 2.6501s)
+         [harness] Client: Encrypted results size: 1.3M
+20:12:57 [harness] 8: Client: Result decryption completed (elapsed: 1.9299s)
+20:12:57 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0002s)
+20:12:59 [harness] 10.1: Harness: Run inference for harness plaintext model completed (elapsed: 2.5665s)
+[harness] Encrypted model: 0.9400 (94/100 correct)
+[harness] Harness model: 0.9900 (99/100 correct)
+20:12:59 [harness] 10.2: Harness: Run quality check completed (elapsed: 0.0003s)
+[total latency] 28.7825s
 ```
-- Public + evaluation keys size: \~2.1 MB
-- Encrypted input size: \~24.5 MB
-- Total inference latency: 16.2854
-- Compute inference latency: 68 ms
+- Public + evaluation keys size: 7.3 MB
+- Encrypted input size: 98 MB
+- Total inference latency: 1.1 s
+- Compute inference latency: 315 ms
 -----
 
 ### `batch_size = 1000`
@@ -166,31 +160,29 @@ apply_hom_pipeline timing: network;dur=13920, logic;dur=224, instance;dur=153, w
 ```
 python3 harness/run_submission.py --remote 2
 
-13:32:07 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 9.0411s)
-13:32:12 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 5.5564s)
-         [harness] Cryptographic Context size: 211.1K
-13:32:15 [harness] 2.2: Client: Key Generation completed (elapsed: 2.5813s)
-         [harness] Client: Public and evaluation keys size: 2.1M
-13:32:26 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 10.6807s)
-13:32:26 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0004s)
-13:32:30 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 4.6718s)
-13:32:30 [harness] 5: Client: Input preprocessing completed (elapsed: 0.0005s)
-13:32:35 [harness] 6: Client: Input encryption completed (elapsed: 4.1143s)
-         [harness] Client: Encrypted input size: 49.0M
-ct size: 49.0MB
-apply_hom_pipeline timing: network;dur=16404, logic;dur=439, instance;dur=381, worker;dur=142
-13:32:54 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 19.0744s)
-         [harness] Client: Encrypted results size: 640.1K
-13:32:56 [harness] 8: Client: Result decryption completed (elapsed: 2.6214s)
-13:32:56 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0002s)
-13:33:00 [harness] 10.1: Harness: Run inference for harness plaintext model completed (elapsed: 4.2081s)
-[harness] Encrypted model: 0.8820 (882/1000 correct)
-[harness] Harness model: 0.8820 (882/1000 correct)
-13:33:00 [harness] 10.2: Harness: Run quality check completed (elapsed: 0.0029s)
-[total latency] 62.5536s
+20:16:17 [harness] 1: Harness: MNIST Test dataset generation completed (elapsed: 7.3336s)
+20:16:20 [harness] 2.1: Communication: Get cryptographic context completed (elapsed: 2.3775s)
+         [harness] Cryptographic Context size: 835.0K
+20:16:21 [harness] 2.2: Client: Key Generation completed (elapsed: 1.7088s)
+         [harness] Client: Public and evaluation keys size: 7.3M
+20:16:24 [harness] 2.3: Communication: Upload evaluation key completed (elapsed: 2.3162s)
+20:16:24 [harness] 3: Server: (Encrypted) model preprocessing completed (elapsed: 0.0002s)
+20:16:27 [harness] 4: Harness: Input generation for MNIST completed (elapsed: 3.1771s)
+20:16:29 [harness] 5: Client: Input preprocessing completed (elapsed: 1.8815s)
+20:16:32 [harness] 6: Client: Input encryption completed (elapsed: 3.0121s)
+         [harness] Client: Encrypted input size: 98.0M
+20:16:34 [harness] 7: Server: Encrypted ML Inference computation completed (elapsed: 2.6911s)
+         [harness] Client: Encrypted results size: 1.3M
+20:16:36 [harness] 8: Client: Result decryption completed (elapsed: 1.9127s)
+20:16:36 [harness] 9: Client: Result postprocessing completed (elapsed: 0.0002s)
+20:16:39 [harness] 10.1: Harness: Run inference for harness plaintext model completed (elapsed: 2.7296s)
+[harness] Encrypted model: 0.9720 (972/1000 correct)
+[harness] Harness model: 0.9810 (981/1000 correct)
+20:16:39 [harness] 10.2: Harness: Run quality check completed (elapsed: 0.0007s)
+[total latency] 29.1411s
 ```
-- Public + evaluation keys size: \~2.1 MB
-- Encrypted input size: \~49.0 MB
-- Total inference latency: 19.0744s
-- Compute inference latency: 142 ms
+- Public + evaluation keys size: 7.3 MB
+- Encrypted input size: 98 MB
+- Total inference latency: 0.9 s
+- Compute inference latency: 314 ms
 
