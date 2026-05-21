@@ -59,7 +59,7 @@ python3 harness/run_submission.py --remote 0
 - Public + evaluation keys size: 46 MB
 - Encrypted input size: 128 KB
 - Total inference latency: 210 ms
-- Compute inference latency: ~80 ms
+- Compute inference latency: 22 ms
 -----
 
 ### `batch_size = 100`
