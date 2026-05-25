@@ -1,19 +1,19 @@
 {
-  "total_latency_ms": 30.3374,
+  "total_latency_ms": 28.7906,
   "per_stage": {
-    "Harness: MNIST Test dataset generation": "7.3809s",
-    "Communication: Get cryptographic context": "2.3667s",
-    "Client: Key Generation": "1.7213s",
-    "Communication: Upload evaluation key": "2.4119s",
+    "Harness: MNIST Test dataset generation": "7.0806s",
+    "Communication: Get cryptographic context": "2.2836s",
+    "Client: Key Generation": "1.7156s",
+    "Communication: Upload evaluation key": "2.2964s",
     "Server: (Encrypted) model preprocessing": "0.0002s",
-    "Harness: Input generation for MNIST": "3.1598s",
-    "Client: Input preprocessing": "1.8918s",
-    "Client: Input encryption": "3.1599s",
-    "Server: Encrypted ML Inference computation": "3.5983s",
-    "Client: Result decryption": "1.9181s",
+    "Harness: Input generation for MNIST": "3.1286s",
+    "Client: Input preprocessing": "1.89s",
+    "Client: Input encryption": "3.2272s",
+    "Server: Encrypted ML Inference computation": "2.5215s",
+    "Client: Result decryption": "1.9232s",
     "Client: Result postprocessing": "0.0002s",
-    "Harness: Run inference for harness plaintext model": "2.7278s",
-    "Harness: Run quality check": "0.0007s"
+    "Harness: Run inference for harness plaintext model": "2.723s",
+    "Harness: Run quality check": "0.0006s"
   },
   "bandwidth": {
     "Cryptographic Context": "835.0K",
