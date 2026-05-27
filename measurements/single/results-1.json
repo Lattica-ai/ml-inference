@@ -1,22 +1,30 @@
 {
-  "total_latency_ms": 24.514,
-  "per_stage": {
-    "Harness: MNIST Test dataset generation": "7.1741s",
-    "Communication: Get cryptographic context": "2.5225s",
-    "Client: Key Generation": "2.1759s",
-    "Communication: Upload evaluation key": "3.3349s",
-    "Server: (Encrypted) model preprocessing": "0.0002s",
-    "Harness: Input generation for MNIST": "2.5696s",
-    "Client: Input preprocessing": "1.6168s",
-    "Client: Input encryption": "1.6313s",
-    "Server: Encrypted ML Inference computation": "1.8373s",
-    "Client: Result decryption": "1.6515s",
-    "Client: Result postprocessing": "0.0002s"
+  "model_name": "mlp",
+  "dataset_name": "mnist",
+  "Timing": {
+    "Test dataset generation": "7.1235s",
+    "Communication: Get cryptographic context": "2.6627s",
+    "Key Generation": "2.1834s",
+    "Communication: Upload evaluation key": "3.17s",
+    "Encrypted model preprocessing": "0.0002s",
+    "Input generation": "2.5355s",
+    "Input preprocessing": "1.5982s",
+    "Input encryption": "1.631s",
+    "Encrypted computation": "1.8307s",
+    "Result decryption": "1.6463s",
+    "Result postprocessing": "0.0001s",
+    "Total": "24.3816s"
   },
-  "bandwidth": {
+  "Bandwidth": {
     "Cryptographic Context": "1.2M",
-    "Client: Public and evaluation keys": "46.0M",
-    "Client: Encrypted input": "128.1K",
-    "Client: Encrypted results": "128.1K"
+    "Public and evaluation keys": "46.0M",
+    "Encrypted input": "128.1K",
+    "Encrypted results": "128.1K"
+  },
+  "Server Reported": {
+    "Encrypted computation": "0.016s",
+    "Backend overhead": "0.124s",
+    "Upload time": "0.012s",
+    "Download time": "0.057s"
   }
 }

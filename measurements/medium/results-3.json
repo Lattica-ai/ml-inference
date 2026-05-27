@@ -1,27 +1,29 @@
 {
-  "total_latency_ms": 28.7906,
-  "per_stage": {
-    "Harness: MNIST Test dataset generation": "7.0806s",
-    "Communication: Get cryptographic context": "2.2836s",
-    "Client: Key Generation": "1.7156s",
-    "Communication: Upload evaluation key": "2.2964s",
-    "Server: (Encrypted) model preprocessing": "0.0002s",
-    "Harness: Input generation for MNIST": "3.1286s",
-    "Client: Input preprocessing": "1.89s",
-    "Client: Input encryption": "3.2272s",
-    "Server: Encrypted ML Inference computation": "2.5215s",
-    "Client: Result decryption": "1.9232s",
-    "Client: Result postprocessing": "0.0002s",
-    "Harness: Run inference for harness plaintext model": "2.723s",
-    "Harness: Run quality check": "0.0006s"
+  "model_name": "mlp",
+  "dataset_name": "mnist",
+  "Timing": {
+    "Test dataset generation": "7.0801s",
+    "Communication: Get cryptographic context": "2.367s",
+    "Key Generation": "1.7128s",
+    "Communication: Upload evaluation key": "2.3099s",
+    "Encrypted model preprocessing": "0.0002s",
+    "Input generation": "3.1482s",
+    "Input preprocessing": "1.9015s",
+    "Input encryption": "3.1781s",
+    "Encrypted computation": "2.5151s",
+    "Result decryption": "1.9191s",
+    "Result postprocessing": "0.0002s",
+    "Harness: Run inference for harness plaintext model": "2.7221s",
+    "Harness: Run quality check": "0.0006s",
+    "Total": "28.8547s"
   },
-  "bandwidth": {
+  "Bandwidth": {
     "Cryptographic Context": "835.0K",
-    "Client: Public and evaluation keys": "7.3M",
-    "Client: Encrypted input": "98.0M",
-    "Client: Encrypted results": "1.3M"
+    "Public and evaluation keys": "7.3M",
+    "Encrypted input": "98.0M",
+    "Encrypted results": "1.3M"
   },
-  "model_quality": {
+  "Quality": {
     "Encrypted model quality": {
       "correct_predictions": 972,
       "total_samples": 1000,
@@ -32,5 +34,11 @@
       "total_samples": 1000,
       "accuracy": 0.981
     }
+  },
+  "Server Reported": {
+    "Encrypted computation": "0.216s",
+    "Backend overhead": "0.04s",
+    "Upload time": "0.469s",
+    "Download time": "0.088s"
   }
 }
